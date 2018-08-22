@@ -5,29 +5,32 @@
     <title>Exercice7/7</title>
   </head>
   <body>
-      <?php
-      if(empty($_POST) && empty($_GET)){
-      ?>
-    <form action="index.php" method="get">
-        <select name="civility">
-            <option>Monsieur</option>
-            <option>Madame</option>
-        </select>
-      <label for="lastname">Votre nom : </label><input type="text" name="lastname" placeholder="Nom" />
-      <label for="firstname">Votre prénom : </label><input type="text" name="firstname" placeholder="Prénom" />
-      <label for="file">Nom du fichier : </label><input type="file" name="file" placeholder="Fichier" />
-      <input type="submit" value="Valider" />
-    </form>
-      <?php
-      }
-      ?>
-  <?php
-    if(isset($_GET['civility']) && ($_GET['firstname']) && isset($_GET['lastname']) && isset($_GET['file'])){
-        echo $_GET['civility'] . ' ' . $_GET['firstname'] . ' ' . $_GET['lastname'] . ' ' . $_GET['file'];
-    }
-    elseif(isset($_POST['civility']) && ($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['file'])){
-        echo $_POST['civility'] . ' ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . ' ' . $_POST['file'];
-    }
-  ?>
-  </body>
+      
+              <?php
+        // Vérification de la présence de valeurs
+        if (!empty($_POST['civility']) && !empty($_POST['lastname']) && !empty($_POST['firstname']) && !empty($_FILES['file'])) {
+            // Déclaration de la variable qui stocke les infos du fichier récupérées par la fonction pathinfo
+            $fileInfo = pathinfo($_FILES['file']['name']);
+            // Affichage des valeurs des paramètres
+            echo $_POST['civility'] . ' ' . $_POST['lastname'] . ' ' . $_POST['firstname'] . ' a envoyé le fichier ' . $_FILES['file']['name'] . ' ' . $fileInfo['extension'];
+        } else {
+            // Sinon affichage du formulaire
+            ?>
+            <form action="index.php" method="post" enctype ="multipart/form-data">
+                <label for="civility">Civilité</label>
+                <select name="civility" id="civility">
+                    <option selected disabled>Veuillez sélectionner une option</option>
+                    <option value="Monsieur">Monsieur</option>
+                    <option value="Madame">Madame</option>
+                </select>
+                <label for="lastname">Votre Prénom :</label>
+                <input type="text" name="lastname" id="lastname" />
+                <label for="firstname">Votre Nom :</label>
+                <input type="text" name="firstname"  id="firstname" />
+                <label for="file">Fichier :</label>
+                <input type="file" name="file" id="file" />
+                <input type="submit" name="submit" value="Envoyer" />
+            </form>
+        <?php } ?>
+    </body>
 </html>
